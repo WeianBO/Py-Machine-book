@@ -7,7 +7,10 @@ import numpy as np
 from sklearn import linear_model
 import matplotlib.pyplot as plt
 import sklearn.metrics as sm
-import _compat_pickle as pickle
+import pickle
+from sklearn.preprocessing import PolynomialFeatures
+
+
 
 '''创建线性回归器'''
 # filename = sys.argv[1] 命令行输入文件名时使用
@@ -61,6 +64,18 @@ print("Mean squared error = ", round(sm.mean_squared_error(y_test, y_test_pred),
 print("Median absoule error = ", round(sm.median_absolute_error(y_test, y_test_pred), 2)) # 中位数绝对误差
 print("Explained variance score = ", round(sm.explained_variance_score(y_test, y_test_pred), 2)) # 解释方差分
 print("R2 score = ", round(sm.r2_score(y_test, y_test_pred), 2)) # R方得分
+
+'''保存模型数据'''
+
+output_model_file = 'saved_model.pkl'
+with open(output_model_file, 'wb') as f:
+    pickle.dump(linear_regressor, f)
+
+#加载使用
+with open(output_model_file, 'rb') as f:
+    model_linregr = pickle.load(f)
+y_test_pred_new = model_linregr.predict(x_test)
+print("\nNew mean absolute error = ", round(sm.mean_absolute_error(y_test, y_test_pred_new), 2))
 
 
 
